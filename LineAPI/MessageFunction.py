@@ -1,6 +1,8 @@
 from linebot.models import (FlexSendMessage, TextSendMessage, ImageSendMessage)
 from linebot import LineBotApi
 import LineAPI.Bot as CPS_MessageAPI
+import re , json
+import requests
 
 def MessageFunctionDetaction(message):
     try:
@@ -11,6 +13,24 @@ def MessageFunctionDetaction(message):
         replytoken = message.reply_token
     except KeyError:
         return ""
+
+    # メッセージ発信がグループからだった場合
+    if(source_type == "group" and message_type == "text"):
+
+        if("Slack チャネル 連携" in text):
+            groupId = message.source.group_id
+            text = text.replace("Slack チャネル 連携", "")
+            secrete = re.findall('-S (.*)', text)
+            try:
+                secrete[0]
+            except IndexError:
+                return ""
+            requests.post(CPS_MessageAPI.SlackOutCommingURL, data=json.dumps({
+                'text': u'LINE GROUP REGIST:{0}:{1}'.format(groupId, secrete[0]),  # 通知内容
+                'username': u'Line登録の情報通知(グループ)',  # ユーザー名
+                'icon_emoji': u':line:',  # アイコン
+                'link_names': 1,  # 名前をリンク化
+            }))
 
     # メッセージ送信がユーザからであり、メッセージタイプがテキストだった場合
     if (source_type == "user" and message_type == "text"):
@@ -77,4 +97,3 @@ def ReplyMessage(replytoken):
     message = "メッセージありがとうございます。\n" + "申し訳ありませんが個別のご返信をすることができません。"
     line_bot_api = CPS_MessageAPI.line_bot_api
     line_bot_api.reply_message(replytoken,TextSendMessage(text=message))
-
