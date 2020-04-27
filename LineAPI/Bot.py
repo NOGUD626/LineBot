@@ -13,19 +13,6 @@ import json
 import os
 from LineAPI import MessageFunction as CPS_MessageAPI
 
-# line_token = "Db+nhEvABogouaViDQxe9PvT92N/+y1Nj01aBCWq6gU8QWEKFvEGougjUrPtZYXtGscCRsCA8Tkn7IP9q5LlwkrzfOTsKCZhNj5GMwVwuzYLoOJgLG2/cDYeMI7mX0OkW3GqnJXjcSb1g2vGupqblAdB04t89/1O/w1cDnyilFU="
-# line_bot_api = LineBotApi(line_token)
-#
-# handler = WebhookHandler('d6d74d157e28ee64278cbc40ae49a077')
-# # 認証用
-# cilent_id = 1654140097
-# client_secret = "3b69fb0c139bdf08ac0fba50c20dc10a"
-# # SlackOutCommingURL
-# SlackOutCommingURL = "https://hooks.slack.com/services/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"
-#
-# myselfURL = "https://eda2a556.ngrok.io"
-#============================================================================
-
 line_token = os.environ.get('LineBotApi')
 line_bot_api = LineBotApi(line_token)
 
